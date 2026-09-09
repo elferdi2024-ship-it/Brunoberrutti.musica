@@ -3,8 +3,22 @@
  * shared by the Vite plugin and Nitro middleware. Plain ESM so `node --test`
  * and the Nitro bundler can both consume it.
  */
-import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+
+// Safe node:fs loader that avoids bundling "node:fs" into Cloudflare Workers / Edge runtimes
+let existsSync = () => false;
+let readFileSync = () => "";
+
+if (typeof process !== "undefined" && process.versions?.node) {
+  try {
+    const fsModName = ["node", "fs"].join(":");
+    const fsMod = await import(/* @vite-ignore */ fsModName).catch(() => null);
+    if (fsMod) {
+      existsSync = fsMod.existsSync;
+      readFileSync = fsMod.readFileSync;
+    }
+  } catch {}
+}
 
 export const DEFAULT_APP_NAME = "Grok App";
 export const OG_SERVICE_URL_DEFAULT = "https://og.grok.me";
