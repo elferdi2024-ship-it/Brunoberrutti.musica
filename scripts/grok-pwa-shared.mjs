@@ -20,6 +20,15 @@ if (typeof process !== "undefined" && process.versions?.node) {
   } catch {}
 }
 
+export function safeCwd() {
+  try {
+    if (typeof process !== "undefined" && typeof process.cwd === "function") {
+      return process.cwd();
+    }
+  } catch {}
+  return "";
+}
+
 export const DEFAULT_APP_NAME = "Grok App";
 export const OG_SERVICE_URL_DEFAULT = "https://og.grok.me";
 export const OG_SITE_REL_PATH = "src/lib/og/site.json";
@@ -256,7 +265,8 @@ export function grokExtensionsHeadTags(projectId = readGrokProjectId()) {
   return tags;
 }
 
-export function readOgSite(cwd = process.cwd()) {
+export function readOgSite(cwd = safeCwd()) {
+  if (!cwd) return {};
   try {
     const raw = readFileSync(join(cwd, OG_SITE_REL_PATH), "utf8");
     const parsed = JSON.parse(raw);
@@ -267,20 +277,22 @@ export function readOgSite(cwd = process.cwd()) {
 }
 
 /** Public path of an on-disk share card, or "" if neither file exists. */
-export function ogCardPublicPath(cwd = process.cwd()) {
+export function ogCardPublicPath(cwd = safeCwd()) {
+  if (!cwd) return "";
   if (existsSync(join(cwd, "public/og.jpg"))) return "/og.jpg";
   if (existsSync(join(cwd, "public/og.png"))) return "/og.png";
   return "";
 }
 
-function detectCustomOgCard(cwd = process.cwd(), site = {}) {
-  if (ogCardPublicPath(cwd)) return true;
+function detectCustomOgCard(cwd = safeCwd(), site = {}) {
+  if (cwd && ogCardPublicPath(cwd)) return true;
   // Vercel runtime has no public/: trust a bake that already saw the file.
   return siteHasCustomCard(site) || Boolean(String(site.image ?? "").trim());
 }
 
 /** Snapshot for Vite/Nitro to bake into the server bundle (Vercel has no workspace FS). */
-export function snapshotOgIdentity(cwd = process.cwd()) {
+export function snapshotOgIdentity(cwd = safeCwd()) {
+  if (!cwd) return { site: {} };
   const site = { ...readOgSite(cwd) };
   const disk = ogCardPublicPath(cwd);
   if (disk) {
@@ -297,8 +309,8 @@ export function snapshotOgIdentity(cwd = process.cwd()) {
   return { site };
 }
 
-export function customOgAssetPath(cwd = process.cwd()) {
-  return ogCardPublicPath(cwd) || "/og.jpg";
+export function customOgAssetPath(cwd = safeCwd()) {
+  return (cwd && ogCardPublicPath(cwd)) || "/og.jpg";
 }
 
 export function ogServiceUrl() {
@@ -336,12 +348,13 @@ export function siteHasCustomCard(site = {}) {
  * Vercel: the bake (`card=custom` / `image`) because the function cannot stat public/.
  * Otherwise empty — caller emits the og.grok.me placeholder.
  */
-export function resolveOgCardAsset(site = {}, cwd = process.cwd()) {
-  return ogCardPublicPath(cwd) || (detectCustomOgCard(cwd, site) ? String(site.image ?? "").trim() || "/og.jpg" : "");
+export function resolveOgCardAsset(site = {}, cwd = safeCwd()) {
+  return (cwd && ogCardPublicPath(cwd)) || (detectCustomOgCard(cwd, site) ? String(site.image ?? "").trim() || "/og.jpg" : "");
 }
 
 /** Stamp `card=custom` when public/og.jpg or public/og.png is on disk. */
 function applyCustomCardFromFs(site, cwd) {
+  if (!cwd) return site;
   const disk = ogCardPublicPath(cwd);
   if (!disk) return site;
   return { ...site, card: "custom", image: disk };
@@ -352,7 +365,7 @@ export function grokOgHeadTags({
   appName = DEFAULT_APP_NAME,
   site = {},
   documentTitle = "",
-  cwd = process.cwd(),
+  cwd = safeCwd(),
 } = {}) {
   const title = resolveOgTitle(site, appName, host, documentTitle);
   const publicHost = resolvePublicHost(host);
@@ -422,13 +435,13 @@ function insertBeforeHeadClose(html, snippet) {
 }
 
 export function normalizeHeadContext(ctx = {}) {
-  const cwd = ctx.cwd ?? process.cwd();
+  const cwd = ctx.cwd ?? safeCwd();
   // Middleware passes a baked `site`. Still consult the workspace so a
   // public/og.jpg generated after that snapshot (or missed by a wrong cwd)
   // wins over the og.grok.me placeholder. Vercel has no public/ to read, so
   // a correct bake is unchanged.
   const site = applyCustomCardFromFs(
-    ctx.site !== undefined ? ctx.site : snapshotOgIdentity(cwd).site,
+    ctx.site !== undefined ? ctx.site : (cwd ? snapshotOgIdentity(cwd).site : {}),
     cwd,
   );
   const appName = resolveOgTitle(site, ctx.appName ?? DEFAULT_APP_NAME, ctx.host ?? "");
