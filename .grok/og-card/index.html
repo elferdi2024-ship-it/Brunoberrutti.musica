@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Bruno Berrutti — OG</title>
+  <style>
+    @font-face {
+      font-family: "Cormorant Garamond";
+      font-style: normal;
+      font-weight: 500;
+      src: url("cormorant-normal.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Cormorant Garamond";
+      font-style: italic;
+      font-weight: 500;
+      src: url("cormorant-italic.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Outfit";
+      font-style: normal;
+      font-weight: 400;
+      src: url("outfit.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "Outfit";
+      font-style: normal;
+      font-weight: 500;
+      src: url("outfit.woff2") format("woff2");
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 1200px;
+      height: 630px;
+      overflow: hidden;
+      background: #F3EEE4;
+    }
+
+    .card {
+      width: 1200px;
+      height: 630px;
+      display: grid;
+      grid-template-columns: 658px 542px;
+      background: #F3EEE4;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .photo {
+      position: relative;
+      overflow: hidden;
+      background: #c9b48f;
+    }
+
+    .photo img.hero {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 52% 38%;
+      filter: saturate(0.9) contrast(1.06) sepia(0.12);
+    }
+
+    .photo .grade {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, rgba(243,238,228,0) 72%, rgba(243,238,228,0.55) 92%, #F3EEE4 100%),
+        linear-gradient(to top, rgba(43,41,37,0.18) 0%, transparent 28%),
+        linear-gradient(135deg, rgba(138,154,128,0.12), transparent 46%);
+      pointer-events: none;
+    }
+
+    .copy {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 54px 68px 48px 42px;
+      background:
+        radial-gradient(ellipse at 88% 12%, rgba(169,196,198,0.18), transparent 44%),
+        radial-gradient(ellipse at 18% 90%, rgba(138,154,128,0.12), transparent 48%),
+        #F3EEE4;
+    }
+
+    .copy::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0.12;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+      mix-blend-mode: multiply;
+    }
+
+    .lockup {
+      position: relative;
+      z-index: 1;
+    }
+
+    .kicker {
+      font-family: "Outfit", sans-serif;
+      font-weight: 500;
+      font-size: 13px;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      color: #8A9A80;
+      margin-bottom: 22px;
+    }
+
+    .name {
+      font-family: "Cormorant Garamond", serif;
+      font-weight: 500;
+      font-size: 86px;
+      line-height: 0.88;
+      letter-spacing: -0.03em;
+      color: #2B2925;
+      font-optical-sizing: auto;
+    }
+
+    .name span {
+      display: block;
+    }
+
+    .rule {
+      width: 52px;
+      height: 2px;
+      background: #A9C4C6;
+      margin: 26px 0 18px;
+      border: 0;
+    }
+
+    .album {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 32px;
+      line-height: 1.1;
+      color: #5c574e;
+      letter-spacing: -0.01em;
+    }
+
+    .footer {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 42px;
+    }
+
+    .cover {
+      width: 72px;
+      height: 72px;
+      object-fit: cover;
+      border-radius: 4px;
+      box-shadow: 0 10px 22px -12px rgba(43, 41, 37, 0.45);
+      outline: 1px solid rgba(201, 180, 143, 0.8);
+    }
+
+    .meta {
+      font-family: "Outfit", sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #8a8478;
+      line-height: 1.55;
+    }
+
+    .frame {
+      position: absolute;
+      inset: 18px;
+      border: 1px solid rgba(138, 154, 128, 0.38);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .edge {
+      position: absolute;
+      top: 18px;
+      bottom: 18px;
+      left: 658px;
+      width: 1px;
+      background: rgba(138, 154, 128, 0.28);
+      z-index: 3;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <article class="card">
+    <div class="photo">
+      <img class="hero" src="bruno-field.jpg" alt="" />
+      <div class="grade"></div>
+    </div>
+    <div class="copy">
+      <div class="lockup">
+        <p class="kicker">Cantautor · Uruguay</p>
+        <h1 class="name"><span>Bruno</span><span>Berrutti</span></h1>
+        <hr class="rule" />
+        <p class="album">Una vuelta menos</p>
+      </div>
+      <div class="footer">
+        <img class="cover" src="album-cover.jpg" alt="" />
+        <p class="meta">Nuevo disco<br />Montevideo</p>
+      </div>
+    </div>
+    <div class="frame"></div>
+    <div class="edge"></div>
+  </article>
+</body>
+</html>

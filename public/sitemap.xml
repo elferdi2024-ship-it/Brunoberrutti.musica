@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+  <url>
+    <loc>https://brunoberrutti.uy/</loc>
+    <lastmod>2026-09-09T22:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://brunoberrutti.uy/images/album-cover.jpg</image:loc>
+      <image:title>Portada oficial del disco Una vuelta menos - Bruno Berrutti</image:title>
+      <image:caption>Acuarela original de la portada del álbum Una vuelta menos</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://brunoberrutti.uy/og.jpg</image:loc>
+      <image:title>Bruno Berrutti — Una vuelta menos (Presentación en vivo)</image:title>
+    </image:image>
+  </url>
+</urlset>

@@ -1,0 +1,7 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+Disallow: /admin
+
+# Host & Sitemap
+Sitemap: https://brunoberrutti.uy/sitemap.xml
