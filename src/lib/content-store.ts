@@ -86,8 +86,7 @@ export const DEFAULT_CONTENT: SiteContent = {
   invitation: {
     kicker: "04 / Presentación & Entradas",
     title: "“Una vuelta menos” en vivo · Sociedad Urbana",
-    description:
-      "Presentación en vivo de \"Una vuelta menos\", el último trabajo de Bruno Berrutti, junto con un recorrido por canciones anteriores.\n\nEl espectáculo contará con una banda en vivo e invitadas/os especiales, en un formato íntimo que busca generar un encuentro cercano con el público y dar lugar a una experiencia musical cuidada y especial.\n\nBruno es cantautor, director de murga y profesor de música. Entre sus composiciones presenta un estilo popular uruguayo, combinando el género Murga, Candombe y Rock con letras introspectivas, explorando temas de identidad y emociones humanas.",
+    description: "",
     reelUrl: "https://www.instagram.com/reel/DdCw5QVhReF/",
     embedUrl: "https://www.instagram.com/reel/DdCw5QVhReF/embed",
     locationNote: "Alejo Rosell y Rius 1483 · 20:30 hs",

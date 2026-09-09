@@ -194,25 +194,6 @@ export function AdminDashboard() {
               </p>
             </div>
 
-            {/* Foto sutil de bienvenida con firma delicada */}
-            <div className="relative w-full h-36 rounded-2xl overflow-hidden border border-white/15 shadow-inner">
-              <img
-                src="/images/pasiempre.jpg"
-                alt="Pa Siempre"
-                className="w-full h-full object-cover object-[center_35%] filter saturate-90 brightness-95"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/15 pointer-events-none" />
-              <div
-                className="absolute bottom-2.5 right-4 text-3xl text-white select-none drop-shadow-md"
-                style={{
-                  fontFamily: "'Caveat', cursive",
-                  transform: "rotate(-2deg)",
-                }}
-              >
-                Pa Siempre <span className="text-red-400 text-xl">♥</span>
-              </div>
-            </div>
-
             <form onSubmit={handleLogin} className="space-y-4 pt-1">
               <div>
                 <label className="block font-mono text-[10px] uppercase tracking-widest text-white/60 mb-1.5">
@@ -276,38 +257,39 @@ export function AdminDashboard() {
   return (
     <div className="min-h-screen bg-[#111] text-[#f4efe6] font-sans antialiased selection:bg-acid selection:text-black">
       {/* Top Bar fija */}
-      <header className="sticky top-0 z-50 flex items-center justify-between border-b border-white/10 bg-[#141414]/90 px-6 py-4 backdrop-blur-md">
-        <div className="flex items-center gap-4">
+      <header className="sticky top-0 z-50 flex items-center justify-between border-b border-white/10 bg-[#141414]/95 px-3.5 py-2.5 sm:px-6 sm:py-4 backdrop-blur-md">
+        <div className="flex items-center gap-2.5 sm:gap-4 min-w-0">
           <a
             href="/"
-            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-3.5 py-1.5 font-mono text-xs font-bold text-white transition-all hover:bg-white hover:text-black"
+            className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-2.5 py-1.5 sm:px-3.5 sm:py-1.5 font-mono text-[11px] sm:text-xs font-bold text-white transition-all hover:bg-white hover:text-black shrink-0"
           >
-            <ArrowLeft size={14} />
-            <span>Ver Web</span>
+            <ArrowLeft size={13} />
+            <span className="hidden sm:inline">Ver Web</span>
           </a>
-          <div>
-            <h1 className="font-mono text-xs font-bold uppercase tracking-widest text-white">
-              Bruno Berrutti · Panel de Administración
+          <div className="min-w-0">
+            <h1 className="font-mono text-[11px] sm:text-xs font-bold uppercase tracking-widest text-white truncate">
+              Admin · Bruno Berrutti
             </h1>
-            <p className="font-mono text-[10px] text-white/50 uppercase">
+            <p className="font-mono text-[9px] sm:text-[10px] text-white/50 uppercase hidden sm:block">
               Gestor de Contenido & Diseño Online
             </p>
           </div>
         </div>
 
         {/* Acciones principales */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           {savedToast && (
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#d4fc34] px-3 py-1 font-mono text-xs font-bold text-[#141414] animate-fade-in">
-              <Check size={14} />
-              <span>Guardado online</span>
+            <span className="inline-flex items-center gap-1 rounded-full bg-[#d4fc34] px-2.5 py-1 font-mono text-[10px] sm:text-xs font-bold text-[#141414] animate-fade-in">
+              <Check size={12} />
+              <span className="hidden sm:inline">Guardado online</span>
+              <span className="sm:hidden">Listo</span>
             </span>
           )}
 
           <button
             type="button"
             onClick={() => setResetConfirm(true)}
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-white/20 px-4 py-2 font-mono text-xs font-bold uppercase text-white/70 hover:border-red-400 hover:text-red-400 transition-colors"
+            className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-white/20 px-3.5 py-1.5 font-mono text-xs font-bold uppercase text-white/70 hover:border-red-400 hover:text-red-400 transition-colors"
           >
             <RotateCcw size={13} />
             <span>Restaurar</span>
@@ -316,20 +298,21 @@ export function AdminDashboard() {
           <button
             type="button"
             onClick={handleSave}
-            className="inline-flex items-center gap-2 rounded-full bg-[#d4fc34] px-5 py-2 font-mono text-xs font-bold uppercase text-[#141414] hover:bg-white transition-all shadow-lift cursor-pointer hover:scale-[1.02]"
+            className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-[#d4fc34] px-3.5 py-1.5 sm:px-5 sm:py-2 font-mono text-[11px] sm:text-xs font-bold uppercase text-[#141414] hover:bg-white transition-all shadow-lift cursor-pointer hover:scale-[1.02]"
           >
-            <Save size={14} />
-            <span>Guardar Cambios</span>
+            <Save size={13} />
+            <span className="hidden sm:inline">Guardar Cambios</span>
+            <span className="sm:hidden">Guardar</span>
           </button>
 
           <button
             type="button"
             onClick={handleLogout}
-            className="inline-flex items-center gap-1.5 rounded-full border border-white/20 px-3.5 py-2 font-mono text-xs font-bold uppercase text-white/60 hover:text-white hover:border-white/40 transition-colors cursor-pointer ml-1"
+            className="inline-flex items-center justify-center rounded-full border border-white/20 size-8 sm:size-auto sm:px-3.5 sm:py-2 font-mono text-xs font-bold uppercase text-white/60 hover:text-white hover:border-white/40 transition-colors cursor-pointer"
             title="Cerrar sesión de administración"
           >
             <LogOut size={13} />
-            <span className="hidden sm:inline">Salir</span>
+            <span className="hidden sm:inline sm:ml-1.5">Salir</span>
           </button>
         </div>
       </header>
@@ -403,7 +386,7 @@ export function AdminDashboard() {
         </div>
 
         {/* Pestañas de Navegación del CMS */}
-        <div className="mb-8 flex flex-wrap gap-2 border-b border-white/10 pb-4 font-mono text-xs">
+        <div className="mb-6 sm:mb-8 flex gap-2 border-b border-white/10 pb-3 sm:pb-4 font-mono text-xs overflow-x-auto no-scrollbar scroll-smooth -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
           {[
             { id: "general", label: "Textos & Fechas", icon: Type },
             { id: "album", label: "El Disco (Vinilo)", icon: Disc },
@@ -415,7 +398,7 @@ export function AdminDashboard() {
               key={id}
               type="button"
               onClick={() => setActiveTab(id as typeof activeTab)}
-              className={`flex items-center gap-2 rounded-full px-4 py-2 uppercase tracking-wider transition-all ${
+              className={`flex items-center gap-2 rounded-full px-3.5 py-2 sm:px-4 sm:py-2 uppercase tracking-wider transition-all shrink-0 text-[11px] sm:text-xs ${
                 activeTab === id
                   ? "bg-white text-black font-bold shadow-sm"
                   : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white"

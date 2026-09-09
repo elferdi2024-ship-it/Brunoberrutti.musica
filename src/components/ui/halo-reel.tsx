@@ -231,7 +231,7 @@ export function HaloReel({
       role="region"
       aria-roledescription="carousel"
       aria-label={props["aria-label"] ?? "Image carousel"}
-      tabIndex={0}
+      tabIndex={-1}
       onKeyDown={onKeyDown}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}

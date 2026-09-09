@@ -34,6 +34,15 @@ export function LandingPage() {
   const [menu, setMenu] = useState(false);
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "manual";
+      }
+      if (!window.location.hash || window.location.hash === "#" || window.location.hash === "#galeria") {
+        window.scrollTo(0, 0);
+      }
+    }
+
     gsap.registerPlugin(ScrollTrigger);
     const root = rootRef.current;
     if (!root) return;

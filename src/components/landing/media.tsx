@@ -172,15 +172,7 @@ export function InvitationReel({ onPauseAudio }: Props) {
               {invitation.title}
             </h3>
 
-            <div className="font-sans text-sm sm:text-base leading-relaxed text-paper/80 max-w-xl mx-auto lg:mx-0 space-y-3">
-              {invitation.description.split("\n\n").map((para, idx) => (
-                <p key={idx} className={idx === 0 ? "text-paper font-normal" : idx === 2 ? "text-paper/70 font-medium text-xs sm:text-sm" : ""}>
-                  {para}
-                </p>
-              ))}
-            </div>
-
-            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
               <a
                 href={site.tickets}
                 target="_blank"

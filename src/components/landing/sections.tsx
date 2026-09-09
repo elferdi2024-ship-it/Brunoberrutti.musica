@@ -50,12 +50,12 @@ export function Album({ ambient }: AlbumProps) {
     <section
       id="disco"
       data-album
-      className="relative z-20 bg-paper-deep/40 px-5 sm:px-8 md:px-12 py-16 sm:py-24 md:py-32 border-b border-ink/10 w-full max-w-full overflow-hidden"
+      className="relative z-20 bg-paper-deep/40 px-4 sm:px-8 md:px-12 py-16 sm:py-24 md:py-32 border-b border-ink/10 w-full max-w-full overflow-hidden"
     >
       <div className="mx-auto max-w-6xl w-full">
-        <div className="grid items-start gap-12 sm:gap-16 md:grid-cols-12 md:gap-16">
+        <div className="grid items-center gap-10 sm:gap-14 md:grid-cols-12 md:gap-16">
           {/* Left: Vinyl & Artwork showcase */}
-          <div className="relative mx-auto w-full max-w-[240px] sm:max-w-xs md:max-w-sm md:col-span-5 flex flex-col items-center justify-center overflow-hidden p-2">
+          <div className="relative mx-auto w-full max-w-[220px] sm:max-w-xs md:max-w-sm md:col-span-5 flex flex-col items-center justify-center p-2">
             <div
               ref={vinylRef}
               className={`aspect-square w-full rounded-full bg-charcoal p-3 shadow-lift relative flex items-center justify-center overflow-hidden transition-all duration-700 ${
@@ -89,12 +89,12 @@ export function Album({ ambient }: AlbumProps) {
           </div>
 
           {/* Right: Album Details & Integrated Tracklist */}
-          <div className="md:col-span-7 text-center md:text-left">
-            <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal italic tracking-tight text-ink mb-4 pr-2">
+          <div className="md:col-span-7 text-center md:text-left flex flex-col items-center md:items-start w-full min-w-0">
+            <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal italic tracking-tight text-ink mb-4">
               {album.title}
             </h2>
 
-            <div className="mb-6 space-y-3 font-mono text-xs text-ink-soft">
+            <div className="mb-6 space-y-3 font-mono text-xs text-ink-soft w-full">
               <p className="font-bold text-ink uppercase tracking-wider">
                 Ya disponible en todas las plataformas
               </p>
@@ -109,7 +109,7 @@ export function Album({ ambient }: AlbumProps) {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3 mb-6">
+            <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3 mb-6 w-full max-w-md md:max-w-none">
               <a href={content.site.tickets} target="_blank" rel="noreferrer" className="btn-editorial w-full sm:w-auto text-center">
                 Adquirir Entradas · {content.site.dateShort}
               </a>
@@ -119,16 +119,16 @@ export function Album({ ambient }: AlbumProps) {
             </div>
 
             {/* Reproductor de las 4 canciones del EP */}
-            <div className="rounded-2xl border border-ink/15 bg-paper/95 p-4 sm:p-5 shadow-lift backdrop-blur-sm space-y-3 text-left">
-              <div className="flex items-center justify-between pb-2.5 border-b border-ink/10">
-                <div className="flex items-center gap-2">
-                  <Disc size={15} className={`text-charcoal ${ambient?.on ? "animate-spin" : ""}`} style={{ animationDuration: "5s" }} />
-                  <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-ink">
-                    Escuchar el EP completo en la web
+            <div className="w-full max-w-xl mx-auto md:mx-0 rounded-2xl border border-ink/15 bg-paper/95 p-3.5 sm:p-5 shadow-lift backdrop-blur-sm space-y-3 text-left">
+              <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-ink/10">
+                <div className="flex items-center gap-2 min-w-0">
+                  <Disc size={15} className={`text-charcoal shrink-0 ${ambient?.on ? "animate-spin" : ""}`} style={{ animationDuration: "5s" }} />
+                  <span className="font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-ink truncate">
+                    Escuchar EP en la web
                   </span>
                 </div>
-                <span className="font-mono text-[10px] text-ink-soft">
-                  4 canciones
+                <span className="font-mono text-[10px] text-ink-soft shrink-0">
+                  4 temas
                 </span>
               </div>
 
@@ -141,21 +141,21 @@ export function Album({ ambient }: AlbumProps) {
                   return (
                     <div
                       key={track.id}
-                      className={`flex items-center justify-between gap-3 p-2.5 rounded-xl transition-all cursor-pointer ${
+                      className={`flex items-center justify-between gap-2 sm:gap-3 p-2 sm:p-2.5 rounded-xl transition-all cursor-pointer min-w-0 ${
                         isCurrent
                           ? "bg-charcoal text-paper shadow-sm"
                           : "hover:bg-charcoal/5 text-ink"
                       }`}
                       onClick={() => ambient.selectTrack(idx, isCurrent ? !ambient.on : true)}
                     >
-                      <div className="flex items-center gap-3 min-w-0">
+                      <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
                         <button
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation();
                             ambient.selectTrack(idx, isCurrent ? !ambient.on : true);
                           }}
-                          className={`flex size-8 shrink-0 items-center justify-center rounded-full transition-all ${
+                          className={`flex size-7 sm:size-8 shrink-0 items-center justify-center rounded-full transition-all ${
                             isTrackPlaying
                               ? "bg-acid text-charcoal shadow-sm"
                               : isCurrent
@@ -165,36 +165,36 @@ export function Album({ ambient }: AlbumProps) {
                           aria-label={`Reproducir ${track.title}`}
                         >
                           {isTrackPlaying ? (
-                            <Pause size={12} className="fill-current" />
+                            <Pause size={11} className="fill-current" />
                           ) : (
-                            <Play size={12} className="fill-current ml-0.5" />
+                            <Play size={11} className="fill-current ml-0.5" />
                           )}
                         </button>
 
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-2">
-                            <span className="font-mono text-[10px] opacity-60">
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                            <span className="font-mono text-[9px] sm:text-[10px] opacity-60 shrink-0">
                               {track.number}
                             </span>
-                            <span className="font-mono text-xs font-bold uppercase truncate">
+                            <span className="font-mono text-[11px] sm:text-xs font-bold uppercase truncate">
                               {track.title}
                             </span>
                           </div>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2 shrink-0 font-mono text-[10px]">
+                      <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 font-mono text-[9px] sm:text-[10px]">
                         {isCurrent && (
-                          <span className={`flex items-center gap-1 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${
+                          <span className={`flex items-center gap-1 px-1.5 sm:px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${
                             isTrackPlaying
                               ? "bg-acid text-charcoal animate-pulse"
                               : "bg-paper/20 text-paper/80"
                           }`}>
-                            <Volume2 size={10} />
-                            <span>{isTrackPlaying ? "Sonando" : "Pausado"}</span>
+                            <Volume2 size={9} />
+                            <span className="hidden sm:inline">{isTrackPlaying ? "Sonando" : "Pausado"}</span>
                           </span>
                         )}
-                        <span className="opacity-70 tabular-nums w-8 text-right">
+                        <span className="opacity-70 tabular-nums w-7 sm:w-8 text-right">
                           {track.durationLabel}
                         </span>
                       </div>

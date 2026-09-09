@@ -5,6 +5,18 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export function useSmoothScroll() {
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "manual";
+      }
+      if (!window.location.hash || window.location.hash === "#" || window.location.hash === "#galeria") {
+        window.scrollTo(0, 0);
+        if (window.location.hash === "#galeria") {
+          window.history.replaceState(null, "", window.location.pathname);
+        }
+      }
+    }
+
     gsap.registerPlugin(ScrollTrigger);
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -20,6 +32,10 @@ export function useSmoothScroll() {
       touchMultiplier: 1.15,
       autoRaf: false,
     });
+
+    if (!window.location.hash || window.location.hash === "#" || window.location.hash === "#galeria") {
+      lenis.scrollTo(0, { immediate: true });
+    }
 
     lenis.on("scroll", ScrollTrigger.update);
 

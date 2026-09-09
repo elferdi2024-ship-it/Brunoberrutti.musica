@@ -65,24 +65,29 @@ export function Hero({
       });
 
       if (isMobile) {
-        // En móvil: revelado fluido
+        // En móvil: animación cinemática de foto a pantalla completa contrayéndose hacia la ranura
         tl.set(imgWrap, {
-          scale: 0.9,
-          opacity: 0,
-          borderRadius: "18px",
+          width: "102vw",
+          height: "102svh",
+          x: 0,
+          y: 0,
+          opacity: 1,
+          borderRadius: "0px",
+          zIndex: 40,
         })
-          .set(firstWord, { y: -25, opacity: 0 })
-          .set(lastWord, { y: 25, opacity: 0 })
-          .set(nav, { y: -40, opacity: 0 })
-          .set(bottom, { y: 40, opacity: 0 });
+          .set(firstWord, { yPercent: -120, opacity: 0 })
+          .set(lastWord, { yPercent: 120, opacity: 0 })
+          .set(nav, { yPercent: -100, opacity: 0 })
+          .set(bottom, { yPercent: 100, opacity: 0 });
 
         tl.to(
           imgWrap,
           {
-            scale: 1,
-            opacity: 1,
-            duration: 1.0,
-            delay: 0.1,
+            width: "100%",
+            height: "100%",
+            borderRadius: "16px",
+            duration: 1.35,
+            delay: 0.15,
           },
           "start",
         );
@@ -90,30 +95,30 @@ export function Hero({
         tl.to(
           firstWord,
           {
-            y: 0,
+            yPercent: 0,
             opacity: 1,
-            duration: 0.85,
+            duration: 1.0,
           },
-          "start+=0.15",
+          "start+=0.2",
         );
 
         tl.to(
           lastWord,
           {
-            y: 0,
+            yPercent: 0,
             opacity: 1,
-            duration: 0.85,
+            duration: 1.0,
           },
-          "start+=0.15",
+          "start+=0.2",
         );
 
         tl.to(
           nav,
           {
-            y: 0,
+            yPercent: 0,
             opacity: 1,
-            duration: 0.7,
-            clearProps: "y",
+            duration: 0.75,
+            clearProps: "yPercent",
           },
           "start+=0.35",
         );
@@ -121,10 +126,10 @@ export function Hero({
         tl.to(
           bottom,
           {
-            y: 0,
+            yPercent: 0,
             opacity: 1,
-            duration: 0.7,
-            clearProps: "y",
+            duration: 0.75,
+            clearProps: "yPercent",
           },
           "start+=0.4",
         );
@@ -208,7 +213,7 @@ export function Hero({
       ref={heroRootRef}
       id="hero"
       data-hero
-      className="relative z-10 flex h-[88svh] sm:h-svh min-h-[560px] sm:min-h-[640px] flex-col justify-between overflow-hidden bg-paper select-none w-full max-w-full"
+      className="relative z-10 flex min-h-[100svh] h-[100svh] flex-col justify-between overflow-hidden bg-paper select-none w-full max-w-full"
     >
       <HeroCanvas progressRef={progressRef} />
 
@@ -259,7 +264,7 @@ export function Hero({
       {/* Titular Cinético Principal con composición ampliada y potente en mobile */}
       <div
         data-hero-content
-        className="relative z-20 flex flex-1 flex-col items-center justify-center px-4 sm:px-6 w-full max-w-full overflow-hidden"
+        className="relative z-20 flex flex-1 flex-col items-center justify-center px-4 sm:px-6 w-full max-w-full"
       >
         <h1 className="hero-title flex flex-col md:flex-row items-center justify-center gap-2 sm:gap-3 md:gap-6 text-ink leading-none max-w-full">
           <span
@@ -271,7 +276,7 @@ export function Hero({
 
           {/* Portrait Showcase: Ampliado en mobile para presencia visual cinematográfica */}
           <span
-            className="hero-img-slot my-2 sm:my-3 md:my-0 w-[78vw] max-w-[310px] h-48 sm:w-72 sm:h-48 md:w-52 md:h-28 lg:w-64 lg:h-36 rounded-2xl md:rounded-md shadow-lift overflow-hidden border border-ink/12"
+            className="hero-img-slot my-2 sm:my-3 md:my-0 w-[78vw] max-w-[310px] h-48 sm:w-72 sm:h-48 md:w-52 md:h-28 lg:w-64 lg:h-36 rounded-2xl md:rounded-md shadow-lift border border-ink/12"
             aria-hidden="true"
           >
             <div
