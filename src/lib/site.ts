@@ -25,6 +25,11 @@ export const SITE = {
 
 export const PORTRAITS = [
   {
+    src: "/images/album-cover.jpg",
+    alt: "Portada del disco Una vuelta menos — Bruno Berrutti",
+    position: "center center",
+  },
+  {
     src: "/images/bruno-smile.jpg",
     alt: "Bruno Berrutti sonríe con su guitarra hueca bajo el cielo abierto",
     position: "center 18%",

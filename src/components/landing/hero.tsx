@@ -25,14 +25,18 @@ export function Hero({
   const site = content.site;
 
   const [currentIdx, setCurrentIdx] = useState(0);
+  const [introDone, setIntroDone] = useState(false);
   const heroRootRef = useRef<HTMLElement>(null);
+  const slotRef = useRef<HTMLSpanElement>(null);
+  const introCoverRef = useRef<HTMLDivElement>(null);
+  const introBadgeRef = useRef<HTMLDivElement>(null);
   const imgWrapRef = useRef<HTMLDivElement>(null);
   const firstWordRef = useRef<HTMLSpanElement>(null);
   const lastWordRef = useRef<HTMLSpanElement>(null);
   const navRef = useRef<HTMLElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  // Ciclo continuo de retratos
+  // Ciclo continuo de retratos (se activa una vez finalizada la intro)
   useEffect(() => {
     const timer = window.setInterval(() => {
       setCurrentIdx((prev) => (prev + 1) % PORTRAITS.length);
@@ -40,169 +44,94 @@ export function Hero({
     return () => window.clearInterval(timer);
   }, []);
 
-  // Animación cinemática de entrada
+  // Animación cinemática de entrada: Imagen de portada a pantalla completa morphing hacia la ranura del título
   useEffect(() => {
     const root = heroRootRef.current;
-    const imgWrap = imgWrapRef.current;
+    const slot = slotRef.current;
+    const introCover = introCoverRef.current;
     const firstWord = firstWordRef.current;
     const lastWord = lastWordRef.current;
     const nav = navRef.current;
     const bottom = bottomRef.current;
 
-    if (!root || !imgWrap || !firstWord || !lastWord) return;
-
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReducedMotion) {
-      gsap.set([imgWrap, firstWord, lastWord, nav, bottom], { clearProps: "all" });
-      return;
-    }
+    if (!root || !slot || !firstWord || !lastWord || !introCover) return;
 
     const isMobile = window.innerWidth < 768;
 
+    // Posiciones iniciales ocultas para el texto y barras
+    if (isMobile) {
+      gsap.set(firstWord, { y: -60, opacity: 0 });
+      gsap.set(lastWord, { y: 60, opacity: 0 });
+    } else {
+      gsap.set(firstWord, { xPercent: -120, opacity: 0 });
+      gsap.set(lastWord, { xPercent: 120, opacity: 0 });
+    }
+    gsap.set(nav, { yPercent: -100, opacity: 0 });
+    gsap.set(bottom, { yPercent: 100, opacity: 0 });
+
     const ctx = gsap.context(() => {
+      // Coordenadas exactas de la ranura de destino en el titular
+      const rect = slot.getBoundingClientRect();
+
       const tl = gsap.timeline({
-        defaults: { ease: "cubic-bezier(0.625, 0.05, 0, 1)" },
+        delay: 0.55, // Fracción de segundo visible a pantalla completa como imagen de carga
+        onComplete: () => {
+          setIntroDone(true);
+        },
       });
 
-      if (isMobile) {
-        // En móvil: animación cinemática de foto a pantalla completa contrayéndose hacia la ranura
-        tl.set(imgWrap, {
-          width: "102vw",
-          height: "102svh",
-          x: 0,
-          y: 0,
-          opacity: 1,
-          borderRadius: "0px",
-          zIndex: 40,
-        })
-          .set(firstWord, { yPercent: -120, opacity: 0 })
-          .set(lastWord, { yPercent: 120, opacity: 0 })
-          .set(nav, { yPercent: -100, opacity: 0 })
-          .set(bottom, { yPercent: 100, opacity: 0 });
-
-        tl.to(
-          imgWrap,
-          {
-            width: "100%",
-            height: "100%",
-            borderRadius: "16px",
-            duration: 1.35,
-            delay: 0.15,
-          },
-          "start",
-        );
-
-        tl.to(
-          firstWord,
-          {
-            yPercent: 0,
-            opacity: 1,
-            duration: 1.0,
-          },
-          "start+=0.2",
-        );
-
-        tl.to(
-          lastWord,
-          {
-            yPercent: 0,
-            opacity: 1,
-            duration: 1.0,
-          },
-          "start+=0.2",
-        );
-
-        tl.to(
-          nav,
-          {
-            yPercent: 0,
-            opacity: 1,
-            duration: 0.75,
-            clearProps: "yPercent",
-          },
-          "start+=0.35",
-        );
-
-        tl.to(
-          bottom,
-          {
-            yPercent: 0,
-            opacity: 1,
-            duration: 0.75,
-            clearProps: "yPercent",
-          },
-          "start+=0.4",
-        );
-      } else {
-        // En desktop: zoom cinemático completo hacia la ranura inline
-        tl.set(imgWrap, {
-          width: "102vw",
-          height: "102vh",
-          x: 0,
-          y: 0,
-          opacity: 1,
-          borderRadius: "0px",
-          zIndex: 40,
-        })
-          .set(firstWord, { xPercent: -140, opacity: 0 })
-          .set(lastWord, { xPercent: 140, opacity: 0 })
-          .set(nav, { yPercent: -100, opacity: 0 })
-          .set(bottom, { yPercent: 100, opacity: 0 });
-
-        tl.to(
-          imgWrap,
-          {
-            width: "100%",
-            height: "100%",
-            borderRadius: "6px",
-            duration: 1.4,
-            delay: 0.2,
-          },
-          "start",
-        );
-
-        tl.to(
-          firstWord,
-          {
-            xPercent: 0,
-            opacity: 1,
-            duration: 1.2,
-          },
-          "start+=0.15",
-        );
-
-        tl.to(
-          lastWord,
-          {
-            xPercent: 0,
-            opacity: 1,
-            duration: 1.2,
-          },
-          "start+=0.15",
-        );
-
-        tl.to(
-          nav,
-          {
-            yPercent: 0,
-            opacity: 1,
-            duration: 0.8,
-            clearProps: "yPercent",
-          },
-          "start+=0.4",
-        );
-
-        tl.to(
-          bottom,
-          {
-            yPercent: 0,
-            opacity: 1,
-            duration: 0.8,
-            clearProps: "yPercent",
-          },
-          "start+=0.45",
-        );
+      if (introBadgeRef.current) {
+        tl.to(introBadgeRef.current, { opacity: 0, duration: 0.3 }, "morph");
       }
+
+      // Contracción cinemática de pantalla completa hacia la ranura
+      tl.to(
+        introCover,
+        {
+          top: rect.top,
+          left: rect.left,
+          width: rect.width,
+          height: rect.height,
+          borderRadius: isMobile ? "16px" : "6px",
+          duration: 1.25,
+          ease: "power3.inOut",
+        },
+        "morph",
+      );
+
+      // Revelado armónico de "Bruno" y "Berrutti" al integrarse la imagen
+      if (isMobile) {
+        tl.to(firstWord, { y: 0, opacity: 1, duration: 0.95, ease: "power3.out" }, "morph+=0.25");
+        tl.to(lastWord, { y: 0, opacity: 1, duration: 0.95, ease: "power3.out" }, "morph+=0.25");
+      } else {
+        tl.to(firstWord, { xPercent: 0, opacity: 1, duration: 1.0, ease: "power3.out" }, "morph+=0.25");
+        tl.to(lastWord, { xPercent: 0, opacity: 1, duration: 1.0, ease: "power3.out" }, "morph+=0.25");
+      }
+
+      // Entrada suave del header y la barra inferior
+      tl.to(
+        nav,
+        {
+          yPercent: 0,
+          opacity: 1,
+          duration: 0.75,
+          ease: "power2.out",
+          clearProps: "all",
+        },
+        "morph+=0.35",
+      );
+
+      tl.to(
+        bottom,
+        {
+          yPercent: 0,
+          opacity: 1,
+          duration: 0.75,
+          ease: "power2.out",
+          clearProps: "all",
+        },
+        "morph+=0.4",
+      );
     }, root);
 
     return () => ctx.revert();
@@ -215,6 +144,38 @@ export function Hero({
       data-hero
       className="relative z-10 flex min-h-[100svh] h-[100svh] flex-col justify-between overflow-hidden bg-paper select-none w-full max-w-full"
     >
+      {/* Portada a pantalla completa inicial (Imagen de carga / Intro morph) */}
+      {!introDone && (
+        <div
+          ref={introCoverRef}
+          className="fixed inset-0 z-50 overflow-hidden bg-charcoal pointer-events-none shadow-2xl"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100svh",
+            borderRadius: 0,
+            willChange: "top, left, width, height, border-radius",
+          }}
+        >
+          <img
+            src="/images/album-cover.jpg"
+            alt="Portada Una vuelta menos - Bruno Berrutti"
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
+          <div
+            ref={introBadgeRef}
+            className="absolute bottom-10 sm:bottom-12 left-0 right-0 text-center px-4 flex flex-col items-center gap-2 pointer-events-none"
+          >
+            <span className="font-mono text-[10px] sm:text-xs font-bold text-white/90 uppercase tracking-widest bg-black/50 px-4 py-1.5 rounded-full border border-white/20 backdrop-blur-md shadow-lg">
+              Bruno Berrutti · Una vuelta menos
+            </span>
+          </div>
+        </div>
+      )}
+
       <HeroCanvas progressRef={progressRef} />
 
       {/* Header / Nav */}
@@ -276,12 +237,15 @@ export function Hero({
 
           {/* Portrait Showcase: Ampliado en mobile para presencia visual cinematográfica */}
           <span
-            className="hero-img-slot my-2 sm:my-3 md:my-0 w-[78vw] max-w-[310px] h-48 sm:w-72 sm:h-48 md:w-52 md:h-28 lg:w-64 lg:h-36 rounded-2xl md:rounded-md shadow-lift border border-ink/12"
+            ref={slotRef}
+            className="hero-img-slot my-2 sm:my-3 md:my-0 w-[78vw] max-w-[310px] h-48 sm:w-72 sm:h-48 md:w-52 md:h-28 lg:w-64 lg:h-36 rounded-2xl md:rounded-md shadow-lift border border-ink/12 relative"
             aria-hidden="true"
           >
             <div
               ref={imgWrapRef}
-              className="hero-img-element h-full w-full overflow-hidden bg-charcoal rounded-2xl md:rounded-md"
+              className={`hero-img-element h-full w-full overflow-hidden bg-charcoal rounded-2xl md:rounded-md transition-opacity duration-300 ${
+                introDone ? "opacity-100" : "opacity-0"
+              }`}
             >
               {PORTRAITS.map((portrait, idx) => (
                 <img
